@@ -1,15 +1,9 @@
 from collections import deque
 
 def is_valid_move(x, y, N, visited):
-    """
-    Verifica si un movimiento a la posición (x, y) es válido.
-    """
     return 0 <= x < N and 0 <= y < N and not visited[x][y]
 
 def get_neighbours(x, y, N, visited):
-    """
-    Obtiene los vecinos válidos de la posición (x, y).
-    """
     moves = [(2, 1), (1, 2), (-1, 2), (-2, 1), (-2, -1), (-1, -2), (1, -2), (2, -1)]
     neighbours = []
     for move in moves:
@@ -20,30 +14,39 @@ def get_neighbours(x, y, N, visited):
     return sorted(neighbours, key=lambda x: x[2])
 
 def knight_tour(N, start_x, start_y):
-    """
-    Encuentra un recorrido cerrado para el caballo en un tablero de ajedrez de tamaño N x N.
-    Utiliza el algoritmo de "Warnsdorff's Rule".
-    """
     visited = [[False for _ in range(N)] for _ in range(N)]
     path = [(start_x, start_y)]
     visited[start_x][start_y] = True
 
-    for _ in range(N * N - 1):
+    def backtrack():
+        if len(path) == N * N:  # Todos los movimientos están hechos
+            return True
+        
         current_x, current_y = path[-1]
         neighbours = get_neighbours(current_x, current_y, N, visited)
 
-        if not neighbours:
-            # No hay movimientos válidos desde la posición actual
-            return None
+        for next_x, next_y, _ in neighbours:
+            # Realiza el movimiento
+            path.append((next_x, next_y))
+            visited[next_x][next_y] = True
+            
+            # Llama recursivamente a backtrack
+            if backtrack():
+                return True
+            
+            # Si no se encuentra solución, retrocede
+            path.pop()
+            visited[next_x][next_y] = False
+        
+        return False
 
-        next_x, next_y, _ = neighbours[0]
-        path.append((next_x, next_y))
-        visited[next_x][next_y] = True
-
-    return path
+    if backtrack():
+        return path
+    else:
+        return None
 
 # Ejemplo de uso
-N = 10  # Tamaño del tablero
+N = 4  # Tamaño del tablero
 start_x, start_y = 0, 0  # Posición inicial del caballo
 
 # Encontrar el recorrido del caballo
