@@ -15,6 +15,7 @@ def print_board(board):
 
 # lista para guardar las posiciones que intenta el algoritmo, para luego visualizarlo en la pantalla
 attempted_positions = []
+posiciones_favorables = []
 
 def solve_knights_tour(board, x, y, move_count):
     global total_moves
