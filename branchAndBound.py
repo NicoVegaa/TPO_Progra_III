@@ -58,7 +58,7 @@ def find_knight_tour_branch_and_bound(N, start_x, start_y):
         return None  # No se encontró una solución
 
 # Ejemplo de uso
-N = 8  # Tamaño del tablero
+N = 5  # Tamaño del tablero
 start_x, start_y = 0, 0  # Posición inicial del caballo
 
 # Encontrar el recorrido del caballo
