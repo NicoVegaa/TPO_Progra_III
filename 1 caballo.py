@@ -44,7 +44,7 @@ def solve_knights_tour(board, x, y, move_count):
     return False
 
 def main():
-    size = 5
+    size = 6
     board = initialize_board(size)
     start_x, start_y = 0, 0
     board[start_x][start_y] = 0
@@ -53,16 +53,8 @@ def main():
         print("Solution found!")
         print_board(board)
         movimientos_optimos = posiciones_favorables
-
-        if (size == 5):
-            # solo tenemos foto de un tablero de 5 x 5 
-            # la idea es que no sea un png sino que se genere dinamicamente
-            render = RenderChess(size, movimientos_optimos)
-            render.render()
-        else:
-            print(f"no hay foto para tablero de {size} posiciones")
-            for pos in posiciones_favorables:
-                print(f"({pos[0]}, {pos[1]})")
+        render = RenderChess(size, movimientos_optimos)
+        render.render()
     else:
         print("No solution exists.")
     
