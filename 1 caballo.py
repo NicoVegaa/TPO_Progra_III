@@ -15,8 +15,10 @@ def print_board(board):
 
 # lista para guardar las posiciones que intenta el algoritmo, para luego visualizarlo en la pantalla
 attempted_positions = []
+total_moves = 0
 
 def solve_knights_tour(board, x, y, move_count):
+    global total_moves
     size = len(board)
     
     if move_count == size * size:
@@ -29,6 +31,7 @@ def solve_knights_tour(board, x, y, move_count):
     ]
     
     for dx, dy in knight_moves:
+        total_moves += 1
         new_x, new_y = x + dx, y + dy
         if is_valid_move(new_x, new_y, board):
             # registra cada intento de posicion
@@ -42,7 +45,7 @@ def solve_knights_tour(board, x, y, move_count):
     return False
 
 def main():
-    size = 5
+    size = 8
     board = initialize_board(size)
     start_x, start_y = 0, 0
     board[start_x][start_y] = 0
@@ -56,6 +59,8 @@ def main():
     # Imprimir las posiciones intentadas
     for pos in attempted_positions:
         print(f"({pos[0]}, {pos[1]})")
+
+    print(f"cantidad de movimientos: {total_moves}")
 
 if __name__ == "__main__":
     main()
