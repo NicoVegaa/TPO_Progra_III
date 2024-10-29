@@ -7,7 +7,7 @@ import os
 # Ajusta el sistema de path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from parte2.branchAndBound import encontrar_recorrido_del_caballo_branch_and_bound
-from parte2.branchAndBoundIterativo import encontrar_recorrido_del_caballo_branch_and_bound_iterativo
+from parte2.algoIterativo import encontrar_recorrido_del_caballo_branch_and_bound_iterativo
 from parte1.backtracking import resolver_recorrido_del_caballo, inicializar_tablero
 
 def comenzar_branch_and_bound():
