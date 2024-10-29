@@ -1,6 +1,7 @@
 import pygame
 import time
 import math
+import os
 
 class RenderChess():
     pantalla_ancho = 640
@@ -51,7 +52,8 @@ class RenderChess():
 
     def render(self):
         pygame.init()
-        self.knight_image = pygame.image.load("renderChess\img\wn.png")
+        image_path = os.path.join(os.path.dirname(__file__), "img", "wn.png")
+        self.knight_image = pygame.image.load(image_path)
         self.knight_image = pygame.transform.scale(self.knight_image, (self.cuadrante, self.cuadrante))  # Escalar la imagen
         self.screen = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
         pygame.display.set_caption('Chess Board')
@@ -87,7 +89,7 @@ class RenderChess():
             pygame.display.flip()
 
             # Esperar un poco antes de mover al siguiente punto
-            time.sleep(1)  # Ajusta el tiempo para la velocidad de movimiento
+            time.sleep(0.1)  # Ajusta el tiempo para la velocidad de movimiento
 
             # Actualizar al siguiente movimiento
             current_move_index += 1
