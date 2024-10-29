@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from renderChess.render import RenderChess
+from interfaz.render import RenderChess
 
 def es_movimiento_valido(x, y, N, visitado):
     """
@@ -63,21 +63,3 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
         return camino
     else:
         return None  # No se encontró una solución
-
-# Ejemplo de uso
-N = 10  # Tamaño del tablero
-inicio_x, inicio_y = 4, 1  # Posición inicial del caballo
-
-# Encontrar el recorrido del caballo
-camino_recorrido = encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y)
-
-# Imprimir el resultado
-if camino_recorrido:
-    print("Recorrido del caballo:")
-    render = RenderChess(N, camino_recorrido)
-    render.render()
-    for movimiento in camino_recorrido:
-        print(movimiento)
-else:
-    print("No se encontró un recorrido válido.")
-

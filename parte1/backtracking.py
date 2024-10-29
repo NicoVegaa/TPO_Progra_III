@@ -46,27 +46,3 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos):
             tablero[nuevo_x][nuevo_y] = -1  # Retroceso
             posiciones_favorables.pop()  # Eliminar si el camino no es válido
     return False
-
-def main():
-    tamano = 8
-    tablero = inicializar_tablero(tamano)
-    inicio_x, inicio_y = 0, 0
-    tablero[inicio_x][inicio_y] = 0
-
-    inicio = time.time()
-    
-    posiciones_favorables.append((inicio_x, inicio_y))
-    if resolver_recorrido_del_caballo(tablero, inicio_x, inicio_y, 1):
-        print("¡Solución encontrada!")
-        imprimir_tablero(tablero)
-
-    else:
-        print("No existe solución.")
-    
-    fin = time.time()
-    print("Tiempo de ejecución hasta encontrar solución: ", (fin - inicio))
-    print(f"Cantidad de movimientos: {total_movimientos}")
-
-if __name__ == "__main__":
-    main()
-
