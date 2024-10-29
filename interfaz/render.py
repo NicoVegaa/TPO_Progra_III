@@ -74,7 +74,7 @@ class RenderChess():
             # Actualizar la pantalla
             pygame.display.flip()
             # Esperar un poco antes de mover al siguiente punto
-            time.sleep(0.1)  # Ajusta el tiempo para la velocidad de movimiento
+            time.sleep(1)  # Ajusta el tiempo para la velocidad de movimiento
             # Actualizar al siguiente movimiento
             current_move_index += 1
             if current_move_index < len(self.movimientos):
