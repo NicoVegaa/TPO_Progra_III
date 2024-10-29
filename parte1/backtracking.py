@@ -19,30 +19,34 @@ def imprimir_tablero(tablero):
 posiciones_favorables = []
 total_movimientos = 0
 
-def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos):
+def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimientos):
     global total_movimientos
     tamano = len(tablero)
     
+    # Si todos los movimientos están hechos
     if cuenta_movimientos == tamano * tamano:
-        return True
-    
+        return True, movimientos  # Regresar el recorrido
+
     movimientos_caballo = [
         (2, 1), (1, 2), (-1, 2), (-2, 1),
         (-2, -1), (-1, -2), (1, -2), (2, -1)
     ]
 
-    #posiciones_intentadas.append((x, y)) # todas las posiciones
-    
     for dx, dy in movimientos_caballo:
         total_movimientos += 1
         nuevo_x, nuevo_y = x + dx, y + dy
         if es_movimiento_valido(nuevo_x, nuevo_y, tablero):
-            posiciones_favorables.append((nuevo_x, nuevo_y))  # agrego posiciones favorables acá por la recursividad
+            posiciones_favorables.append((nuevo_x, nuevo_y))  # Agregar posiciones favorables
             tablero[nuevo_x][nuevo_y] = cuenta_movimientos
+            movimientos.append((nuevo_x, nuevo_y))  # Agregar movimiento
             
-            if resolver_recorrido_del_caballo(tablero, nuevo_x, nuevo_y, cuenta_movimientos + 1):
-                return True
+            # Recursividad
+            encontrado, movimientos_resultantes = resolver_recorrido_del_caballo(tablero, nuevo_x, nuevo_y, cuenta_movimientos + 1, movimientos)
+            if encontrado:
+                return True, movimientos_resultantes  # Retornar cuando se encuentre el recorrido
             
-            tablero[nuevo_x][nuevo_y] = -1  # Retroceso
-            posiciones_favorables.pop()  # Eliminar si el camino no es válido
-    return False
+            # Retroceso
+            tablero[nuevo_x][nuevo_y] = -1  # Deshacer movimiento
+            movimientos.pop()  # Eliminar movimiento si el camino no es válido
+
+    return False, movimientos  # Retornar falso si no hay recorrido

@@ -1,10 +1,3 @@
-
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from interfaz.render import RenderChess
-
 def es_movimiento_valido(x, y, N, visitado):
     """
     Verifica si un movimiento a la posición (x, y) es válido.

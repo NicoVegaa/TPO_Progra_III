@@ -1,1 +1,1 @@
-__all__ = ["encontrar_recorrido_del_caballo_branch_and_bound"]
+__all__ = ["encontrar_recorrido_del_caballo_branch_and_bound", "encontrar_recorrido_del_caballo_branch_and_bound_iterativo"]

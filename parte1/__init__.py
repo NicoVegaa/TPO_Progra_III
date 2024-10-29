@@ -1,1 +1,1 @@
-__all__ = ["resolver_recorrido_del_caballo"]
+__all__ = ["resolver_recorrido_del_caballo", "inicializar_tablero"]
