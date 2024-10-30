@@ -2,12 +2,13 @@ import pygame
 import time
 import math
 import os
-class RenderChess():
+
+class RenderChess:
     pantalla_ancho = 640
     pantalla_alto = 640
     screen = None
     
-    #lista de recorrido
+    # lista de recorrido
     path = []
     # Tamaño del tablero
     columnas = 0
@@ -28,6 +29,7 @@ class RenderChess():
         self.filas = tablero
         self.columnas = self.filas
         self.cuadrante = self.pantalla_ancho // self.columnas
+    
     # Función para dibujar el tablero
     def __draw_board(self):
         for row in range(self.filas):
@@ -35,15 +37,31 @@ class RenderChess():
                 color = self.WHITE if (row + col) % 2 == 0 else self.BLACK
                 pygame.draw.rect(self.screen, color, (col * self.cuadrante, row * self.cuadrante, self.cuadrante, self.cuadrante))
     
-    # Función para dibujar el recorrido
+    # Función para dibujar el recorrido con líneas y números
     def __draw_path(self):
+        # Dibujar los puntos del recorrido y las líneas de conexión
         for counter, (row, col) in enumerate(self.path):
+            # Dibujar un círculo en cada punto del recorrido
             pygame.draw.circle(self.screen, self.PATH_COLOR, (col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2), self.cuadrante // 4)
-            # Opcional: dibujar el número en el camino
-            font = pygame.font.Font(None, 36)  # Crear fuente
-            text_surface = font.render(str(counter + 1), True, (0, 0, 0))  # Texto negro
+            
+            # Dibujar una línea desde el paso anterior al actual
+            if counter > 0:
+                prev_row, prev_col = self.path[counter - 1]
+                pygame.draw.line(
+                    self.screen,
+                    self.PATH_COLOR,
+                    (prev_col * self.cuadrante + self.cuadrante // 2, prev_row * self.cuadrante + self.cuadrante // 2),
+                    (col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2),
+                    3  # Grosor de la línea
+                )
+        
+        # Dibujar los números después de las líneas para que se vean en la parte superior
+        font = pygame.font.Font(None, 36)
+        for counter, (row, col) in enumerate(self.path):
+            text_surface = font.render(str(counter + 1), True, (0, 0, 0))
             text_rect = text_surface.get_rect(center=(col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2))
             self.screen.blit(text_surface, text_rect)
+    
     def render(self):
         pygame.init()
         image_path = os.path.join(os.path.dirname(__file__), "img", "wn.png")
@@ -51,20 +69,24 @@ class RenderChess():
         self.knight_image = pygame.transform.scale(self.knight_image, (self.cuadrante, self.cuadrante))  # Escalar la imagen
         self.screen = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
         pygame.display.set_caption('Chess Board')
+        
         # Inicializar la posición del caballo
         current_move_index = 0
         knight_row, knight_col = self.movimientos[current_move_index]
+        
         # Lista para almacenar el recorrido
         self.path = [(knight_row, knight_col)]
+        
         # Bucle principal
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+            
             # Dibujar el tablero
             self.__draw_board()
-            # Dibujar el recorrido
+            # Dibujar el recorrido con líneas y números
             self.__draw_path()
             # Calcular la posición del caballo en píxeles
             knight_x = knight_col * self.cuadrante
@@ -74,7 +96,7 @@ class RenderChess():
             # Actualizar la pantalla
             pygame.display.flip()
             # Esperar un poco antes de mover al siguiente punto
-            time.sleep(0.1)  # Ajusta el tiempo para la velocidad de movimiento
+            time.sleep(0.5)  # Ajusta el tiempo para la velocidad de movimiento
             # Actualizar al siguiente movimiento
             current_move_index += 1
             if current_move_index < len(self.movimientos):
@@ -82,5 +104,6 @@ class RenderChess():
                 self.path.append((knight_row, knight_col))  # Agregar la nueva posición al recorrido
             else:
                 running = False  # Terminar si no hay más movimientos
+        
         # Salir de pygame
         pygame.quit()
