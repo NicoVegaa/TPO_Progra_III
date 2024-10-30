@@ -19,8 +19,9 @@ def obtener_vecinos(x, y, N, visitado):
         nuevo_x, nuevo_y = x + movimiento[0], y + movimiento[1]
         # Incrementamos movimientos_totales para cada intento de movimiento
         global movimientos_totales
-        movimientos_totales += 1
         if es_movimiento_valido(nuevo_x, nuevo_y, N, visitado):
+            movimientos_totales += 1
+
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
     return sorted(vecinos, key=lambda x: x[2])
@@ -62,8 +63,10 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
     visitado = [[False for _ in range(N)] for _ in range(N)]
     camino = [(inicio_x, inicio_y)]
     visitado[inicio_x][inicio_y] = True
-
+    
     if recorrido_del_caballo_branch_and_bound(N, camino, visitado, inicio_x, inicio_y, 1):
+        print(movimientos_totales)
         return camino
     else:
+        print(movimientos_totales)
         return None  # No se encontró una solución

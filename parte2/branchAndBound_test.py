@@ -2,7 +2,7 @@ from branchAndBound import encontrar_recorrido_del_caballo_branch_and_bound, mov
 import time
 
 def run_test():
-    N = 10  # Tamaño del tablero NxN
+    N = 3  # Tamaño del tablero NxN
     inicio_x, inicio_y = 0, 0  # Posición inicial del caballo
 
     # Medir el tiempo de inicio
