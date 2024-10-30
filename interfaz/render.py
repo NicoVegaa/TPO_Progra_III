@@ -38,6 +38,10 @@ class RenderChess:
     
     # Función para dibujar el recorrido con líneas y números
     def __draw_path(self):
+        # Ajuste de tamaño de fuente en función del tamaño de cada cuadrante
+        font_size = max(12, self.cuadrante // 2)  # Tamaño mínimo de 12 para que el texto sea legible en tableros pequeños
+        font = pygame.font.Font(None, font_size)
+        
         # Dibujar los puntos del recorrido y las líneas de conexión
         for counter, (col, row) in enumerate(self.path):  # Cambiado el orden de (row, col) a (col, row)
             # Dibujar un círculo en cada punto del recorrido
@@ -55,7 +59,6 @@ class RenderChess:
                 )
         
         # Dibujar los números después de las líneas para que se vean en la parte superior
-        font = pygame.font.Font(None, 36)
         for counter, (col, row) in enumerate(self.path):
             text_surface = font.render(str(counter + 1), True, (0, 0, 0))
             text_rect = text_surface.get_rect(center=(col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2))
