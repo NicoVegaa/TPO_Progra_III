@@ -1,3 +1,8 @@
+import time
+
+# Variable global para contar todos los intentos de movimiento
+movimientos_totales = 0
+
 def es_movimiento_valido(x, y, N, visitado):
     """
     Verifica si un movimiento a la posición (x, y) es válido.
@@ -12,6 +17,9 @@ def obtener_vecinos(x, y, N, visitado):
     vecinos = []
     for movimiento in movimientos:
         nuevo_x, nuevo_y = x + movimiento[0], y + movimiento[1]
+        # Incrementamos movimientos_totales para cada intento de movimiento
+        global movimientos_totales
+        movimientos_totales += 1
         if es_movimiento_valido(nuevo_x, nuevo_y, N, visitado):
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
@@ -48,6 +56,9 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
     """
     Inicializa y encuentra un recorrido del caballo en un tablero NxN utilizando branch and bound.
     """
+    global movimientos_totales
+    movimientos_totales = 0  # Reiniciar el contador para cada ejecución
+
     visitado = [[False for _ in range(N)] for _ in range(N)]
     camino = [(inicio_x, inicio_y)]
     visitado[inicio_x][inicio_y] = True
