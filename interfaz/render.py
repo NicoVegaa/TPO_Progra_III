@@ -3,11 +3,13 @@ import time
 import os
 
 class RenderChess:
-    pantalla_ancho = 640
-    pantalla_alto = 640
+    pantalla_ancho = 680  # Incrementamos el ancho para incluir el área lateral
+    pantalla_alto = 680   # Incrementamos el alto para incluir el área superior
+    header_height = 40    # Altura del encabezado para mostrar los números de columnas
+    side_width = 40       # Ancho para el área lateral con los números de filas
     screen = None
     
-    # lista de recorrido
+    # Lista de recorrido
     path = []
     # Tamaño del tablero
     columnas = 0
@@ -15,10 +17,11 @@ class RenderChess:
     cuadrante = 0
     tablero = 0
     movimientos = []
-    # Colores para las casillas
+    # Colores para las casillas y texto
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     PATH_COLOR = (255, 0, 0)  # Color para el recorrido
+    TEXT_COLOR = (255, 255, 255)  # Color del texto de posición en el encabezado
     # Cargar la imagen del caballo
     knight_image = None
     
@@ -27,85 +30,90 @@ class RenderChess:
         self.tablero = tablero
         self.filas = tablero
         self.columnas = self.filas
-        self.cuadrante = self.pantalla_ancho // self.columnas
+        self.cuadrante = (self.pantalla_ancho - self.side_width) // self.columnas
     
     # Función para dibujar el tablero
     def __draw_board(self):
         for row in range(self.filas):
             for col in range(self.columnas):
                 color = self.WHITE if (row + col) % 2 == 0 else self.BLACK
-                pygame.draw.rect(self.screen, color, (col * self.cuadrante, row * self.cuadrante, self.cuadrante, self.cuadrante))
+                pygame.draw.rect(self.screen, color, (self.side_width + col * self.cuadrante, self.header_height + row * self.cuadrante, self.cuadrante, self.cuadrante))
+    
+    # Función para dibujar encabezado y costado con números de posición
+    def __draw_header_and_side(self):
+        font = pygame.font.Font(None, 24)  # Tamaño de fuente para los números
+        # Dibujar números de columnas en el encabezado
+        for col in range(self.columnas):
+            text_surface = font.render(str(col), True, self.TEXT_COLOR)
+            text_rect = text_surface.get_rect(center=(self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height // 2))
+            self.screen.blit(text_surface, text_rect)
+        
+        # Dibujar números de filas en el costado
+        for row in range(self.filas):
+            text_surface = font.render(str(row), True, self.TEXT_COLOR)
+            text_rect = text_surface.get_rect(center=(self.side_width // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2))
+            self.screen.blit(text_surface, text_rect)
     
     # Función para dibujar el recorrido con líneas y números
     def __draw_path(self):
-        # Ajuste de tamaño de fuente en función del tamaño de cada cuadrante
-        font_size = max(12, self.cuadrante // 2)  # Tamaño mínimo de 12 para que el texto sea legible en tableros pequeños
+        font_size = max(12, self.cuadrante // 2)
         font = pygame.font.Font(None, font_size)
         
-        # Dibujar los puntos del recorrido y las líneas de conexión
-        for counter, (row, col) in enumerate(self.path):  # Cambiado el orden a (row, col)
-            # Dibujar un círculo en cada punto del recorrido
-            pygame.draw.circle(self.screen, self.PATH_COLOR, (col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2), self.cuadrante // 4)
-            
-            # Dibujar una línea desde el paso anterior al actual
+        for counter, (col, row) in enumerate(self.path):
+            pygame.draw.circle(self.screen, self.PATH_COLOR, (self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2), self.cuadrante // 4)
             if counter > 0:
-                prev_row, prev_col = self.path[counter - 1]
+                prev_col, prev_row = self.path[counter - 1]
                 pygame.draw.line(
                     self.screen,
                     self.PATH_COLOR,
-                    (prev_col * self.cuadrante + self.cuadrante // 2, prev_row * self.cuadrante + self.cuadrante // 2),
-                    (col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2),
-                    3  # Grosor de la línea
+                    (self.side_width + prev_col * self.cuadrante + self.cuadrante // 2, self.header_height + prev_row * self.cuadrante + self.cuadrante // 2),
+                    (self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2),
+                    3
                 )
         
-        # Dibujar los números después de las líneas para que se vean en la parte superior
-        for counter, (row, col) in enumerate(self.path):
+        for counter, (col, row) in enumerate(self.path):
             text_surface = font.render(str(counter + 1), True, (0, 0, 0))
-            text_rect = text_surface.get_rect(center=(col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2))
+            text_rect = text_surface.get_rect(center=(self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2))
             self.screen.blit(text_surface, text_rect)
     
     def render(self):
         pygame.init()
         image_path = os.path.join(os.path.dirname(__file__), "img", "wn.png")
         self.knight_image = pygame.image.load(image_path)
-        self.knight_image = pygame.transform.scale(self.knight_image, (self.cuadrante, self.cuadrante))  # Escalar la imagen
+        self.knight_image = pygame.transform.scale(self.knight_image, (self.cuadrante, self.cuadrante))
         self.screen = pygame.display.set_mode((self.pantalla_ancho, self.pantalla_alto))
         pygame.display.set_caption('Chess Board')
         
-        # Inicializar la posición del caballo
         current_move_index = 0
-        knight_row, knight_col = self.movimientos[current_move_index]  # Cambiado el orden a (fila, columna)
+        knight_col, knight_row = self.movimientos[current_move_index]
+        self.path = [(knight_col, knight_row)]
         
-        # Lista para almacenar el recorrido
-        self.path = [(knight_row, knight_col)]
-        
-        # Bucle principal
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
             
+            # Dibujar encabezado y costado
+            self.__draw_header_and_side()
             # Dibujar el tablero
             self.__draw_board()
             # Dibujar el recorrido con líneas y números
             self.__draw_path()
-            # Calcular la posición del caballo en píxeles
-            knight_x = knight_col * self.cuadrante
-            knight_y = knight_row * self.cuadrante
-            # Dibujar el caballo en la nueva posición
+            
+            # Posición del caballo
+            knight_x = self.side_width + knight_col * self.cuadrante
+            knight_y = self.header_height + knight_row * self.cuadrante
             self.screen.blit(self.knight_image, (knight_x, knight_y))
-            # Actualizar la pantalla
+            
             pygame.display.flip()
-            # Esperar un poco antes de mover al siguiente punto
-            time.sleep(5)  # Ajusta el tiempo para la velocidad de movimiento
-            # Actualizar al siguiente movimiento
+            time.sleep(0.3)
+            
             current_move_index += 1
             if current_move_index < len(self.movimientos):
-                knight_row, knight_col = self.movimientos[current_move_index]  # Cambiado el orden a (fila, columna)
-                self.path.append((knight_row, knight_col))  # Agregar la nueva posición al recorrido
+                knight_col, knight_row = self.movimientos[current_move_index]
+                self.path.append((knight_col, knight_row))
             else:
-                running = False  # Terminar si no hay más movimientos
+                running = False
         
-        # Salir de pygame
         pygame.quit()
