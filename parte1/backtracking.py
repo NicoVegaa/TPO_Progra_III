@@ -1,9 +1,10 @@
 # parte1/backtracking.py
 import time
-
+import sys
+sys.setrecursionlimit(100000)
 
 def inicializar_tablero(tamano):
-    return [[-1 for _ in range(tamano)] for _ in range(tamano)]
+    return [[-1 for _ in range(tamano)] for _ in range(tamano)] # llena de -1 una matriz
 
 def es_movimiento_valido(x, y, tablero):
     tamano = len(tablero)
@@ -27,7 +28,7 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
     if cuenta_movimientos == tamano * tamano:
         return True, movimientos  # Regresar el recorrido
 
-    movimientos_caballo = [
+    movimientos_caballo = [ # posibles movimientos del caballo
         (2, 1), (1, 2), (-1, 2), (-2, 1),
         (-2, -1), (-1, -2), (1, -2), (2, -1)
     ]
@@ -50,3 +51,4 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
             movimientos.pop()  # Eliminar movimiento si el camino no es válido
 
     return False, movimientos  # Retornar falso si no hay recorrido
+

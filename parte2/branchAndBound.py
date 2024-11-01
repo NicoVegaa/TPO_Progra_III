@@ -1,13 +1,17 @@
 import time
+import sys
+
 
 # Variable global para contar todos los intentos de movimiento
 movimientos_totales = 0
+
+sys.setrecursionlimit(100000)
 
 def es_movimiento_valido(x, y, N, visitado):
     """
     Verifica si un movimiento a la posición (x, y) es válido.
     """
-    return 0 <= x < N and 0 <= y < N and not visitado[x][y]
+    return 0 <= x < N and 0 <= y < N and not visitado[y][x]
 
 def obtener_vecinos(x, y, N, visitado):
     """
@@ -21,9 +25,10 @@ def obtener_vecinos(x, y, N, visitado):
         global movimientos_totales
         if es_movimiento_valido(nuevo_x, nuevo_y, N, visitado):
             movimientos_totales += 1
-
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
+    
+    # Ordena el array vecinos de menor a mayor
     return sorted(vecinos, key=lambda x: x[2])
 
 def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_movimientos):
@@ -39,15 +44,15 @@ def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_mov
 
     for siguiente_x, siguiente_y, _ in vecinos:
         # Marca el movimiento como visitado y añádelo al camino
-        visitado[siguiente_x][siguiente_y] = True
-        camino.append((siguiente_x, siguiente_y))
+        visitado[siguiente_y][siguiente_x] = True
+        camino.append((siguiente_y, siguiente_x))
 
         # Llama recursivamente para continuar el recorrido
         if recorrido_del_caballo_branch_and_bound(N, camino, visitado, siguiente_x, siguiente_y, cuenta_movimientos + 1):
             return True  # Se encontró una solución
 
         # Retrocede si no se encuentra solución desde esta posición
-        visitado[siguiente_x][siguiente_y] = False
+        visitado[siguiente_y][siguiente_x] = False
         camino.pop()
 
     # Poda: Si no se encuentran vecinos válidos, se detiene esta rama
@@ -61,12 +66,10 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
     movimientos_totales = 0  # Reiniciar el contador para cada ejecución
 
     visitado = [[False for _ in range(N)] for _ in range(N)]
-    camino = [(inicio_x, inicio_y)]
-    visitado[inicio_x][inicio_y] = True
+    camino = [(inicio_y, inicio_x)]
+    visitado[inicio_y][inicio_x] = True
     
     if recorrido_del_caballo_branch_and_bound(N, camino, visitado, inicio_x, inicio_y, 1):
-        print(movimientos_totales)
-        return camino
+        return camino, movimientos_totales
     else:
-        print(movimientos_totales)
         return None  # No se encontró una solución
