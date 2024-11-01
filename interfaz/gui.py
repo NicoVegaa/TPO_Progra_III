@@ -86,12 +86,12 @@ def comenzar_backtracking():
         
         # Inicializar tablero
         tablero = inicializar_tablero(tamano_tablero)
-        tablero[posicion_x][posicion_y] = 0  # Establecer la posición inicial
+        tablero[posicion_y][posicion_x] = 0  # Establecer la posición inicial
         
         # Encontrar el recorrido del caballo
-        movimientos_iniciales = [(posicion_x, posicion_y)]  # Lista de movimientos inicial
+        movimientos_iniciales = [(posicion_y, posicion_x)]  # Lista de movimientos inicial
         _, camino_recorrido = resolver_recorrido_del_caballo(tablero, posicion_x, posicion_y, 1, movimientos_iniciales)
-        print(camino_recorrido[:2])
+        print(camino_recorrido[:4])
         
         # Imprimir el resultado
         if camino_recorrido:

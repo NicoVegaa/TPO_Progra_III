@@ -59,10 +59,10 @@ class RenderChess:
         font_size = max(12, self.cuadrante // 2)
         font = pygame.font.Font(None, font_size)
         
-        for counter, (col, row) in enumerate(self.path):
+        for counter, (row, col) in enumerate(self.path):
             pygame.draw.circle(self.screen, self.PATH_COLOR, (self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2), self.cuadrante // 4)
             if counter > 0:
-                prev_col, prev_row = self.path[counter - 1]
+                prev_row, prev_col = self.path[counter - 1]
                 pygame.draw.line(
                     self.screen,
                     self.PATH_COLOR,
@@ -71,7 +71,7 @@ class RenderChess:
                     3
                 )
         
-        for counter, (col, row) in enumerate(self.path):
+        for counter, (row, col) in enumerate(self.path):
             text_surface = font.render(str(counter + 1), True, (0, 0, 0))
             text_rect = text_surface.get_rect(center=(self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2))
             self.screen.blit(text_surface, text_rect)
@@ -85,8 +85,8 @@ class RenderChess:
         pygame.display.set_caption('Chess Board')
         
         current_move_index = 0
-        knight_col, knight_row = self.movimientos[current_move_index]
-        self.path = [(knight_col, knight_row)]
+        knight_row, knight_col = self.movimientos[current_move_index]
+        self.path = [(knight_row, knight_col)]
         
         running = True
         while running:
@@ -94,10 +94,10 @@ class RenderChess:
                 if event.type == pygame.QUIT:
                     running = False
             
-            # Dibujar encabezado y costado
-            self.__draw_header_and_side()
             # Dibujar el tablero
             self.__draw_board()
+            # Dibujar encabezado y costado
+            self.__draw_header_and_side()
             # Dibujar el recorrido con líneas y números
             self.__draw_path()
             
@@ -111,8 +111,8 @@ class RenderChess:
             
             current_move_index += 1
             if current_move_index < len(self.movimientos):
-                knight_col, knight_row = self.movimientos[current_move_index]
-                self.path.append((knight_col, knight_row))
+                knight_row, knight_col = self.movimientos[current_move_index]
+                self.path.append((knight_row, knight_col))
             else:
                 running = False
         
