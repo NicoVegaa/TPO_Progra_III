@@ -24,8 +24,8 @@ def comenzar_branch_and_bound():
             raise ValueError(f"Las coordenadas deben estar entre 0 y {tamano_tablero - 1}.")
         
         # Encontrar el recorrido del caballo
-        camino_recorrido = encontrar_recorrido_del_caballo_branch_and_bound(tamano_tablero, posicion_x, posicion_y)
-        
+        camino_recorrido, mov_totales = encontrar_recorrido_del_caballo_branch_and_bound(tamano_tablero, posicion_x, posicion_y)
+        print(camino_recorrido[:2])
         # Imprimir el resultado
         if camino_recorrido:
             resultado = "Recorrido del caballo:\n"
@@ -34,6 +34,7 @@ def comenzar_branch_and_bound():
             # Renderizar el tablero
             render = RenderChess(tamano_tablero, camino_recorrido)
             render.render()
+            print(mov_totales)
         else:
             messagebox.showinfo("Resultado", "No se encontró un recorrido completo.")
     
@@ -90,6 +91,7 @@ def comenzar_backtracking():
         # Encontrar el recorrido del caballo
         movimientos_iniciales = [(posicion_x, posicion_y)]  # Lista de movimientos inicial
         _, camino_recorrido = resolver_recorrido_del_caballo(tablero, posicion_x, posicion_y, 1, movimientos_iniciales)
+        print(camino_recorrido[:2])
         
         # Imprimir el resultado
         if camino_recorrido:
@@ -126,11 +128,11 @@ ttk.Label(frame, text="Tamaño del tablero:").grid(row=0, column=0, sticky="w", 
 entry_tamano = ttk.Entry(frame, width=10, font=("Arial", 11))
 entry_tamano.grid(row=0, column=1, pady=5)
 
-ttk.Label(frame, text="Posición en X:").grid(row=1, column=0, sticky="w", pady=5)
+ttk.Label(frame, text="Posición en i:").grid(row=1, column=0, sticky="w", pady=5)
 entry_x = ttk.Entry(frame, width=10, font=("Arial", 11))
 entry_x.grid(row=1, column=1, pady=5)
 
-ttk.Label(frame, text="Posición en Y:").grid(row=2, column=0, sticky="w", pady=5)
+ttk.Label(frame, text="Posición en j:").grid(row=2, column=0, sticky="w", pady=5)
 entry_y = ttk.Entry(frame, width=10, font=("Arial", 11))
 entry_y.grid(row=2, column=1, pady=5)
 

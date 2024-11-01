@@ -43,13 +43,13 @@ class RenderChess:
         font = pygame.font.Font(None, font_size)
         
         # Dibujar los puntos del recorrido y las líneas de conexión
-        for counter, (col, row) in enumerate(self.path):  # Cambiado el orden de (row, col) a (col, row)
+        for counter, (row, col) in enumerate(self.path):  # Cambiado el orden a (row, col)
             # Dibujar un círculo en cada punto del recorrido
             pygame.draw.circle(self.screen, self.PATH_COLOR, (col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2), self.cuadrante // 4)
             
             # Dibujar una línea desde el paso anterior al actual
             if counter > 0:
-                prev_col, prev_row = self.path[counter - 1]
+                prev_row, prev_col = self.path[counter - 1]
                 pygame.draw.line(
                     self.screen,
                     self.PATH_COLOR,
@@ -59,7 +59,7 @@ class RenderChess:
                 )
         
         # Dibujar los números después de las líneas para que se vean en la parte superior
-        for counter, (col, row) in enumerate(self.path):
+        for counter, (row, col) in enumerate(self.path):
             text_surface = font.render(str(counter + 1), True, (0, 0, 0))
             text_rect = text_surface.get_rect(center=(col * self.cuadrante + self.cuadrante // 2, row * self.cuadrante + self.cuadrante // 2))
             self.screen.blit(text_surface, text_rect)
@@ -74,10 +74,10 @@ class RenderChess:
         
         # Inicializar la posición del caballo
         current_move_index = 0
-        knight_col, knight_row = self.movimientos[current_move_index]  # Cambiado el orden a (columna, fila)
+        knight_row, knight_col = self.movimientos[current_move_index]  # Cambiado el orden a (fila, columna)
         
         # Lista para almacenar el recorrido
-        self.path = [(knight_col, knight_row)]
+        self.path = [(knight_row, knight_col)]
         
         # Bucle principal
         running = True
@@ -98,12 +98,12 @@ class RenderChess:
             # Actualizar la pantalla
             pygame.display.flip()
             # Esperar un poco antes de mover al siguiente punto
-            time.sleep(0.1)  # Ajusta el tiempo para la velocidad de movimiento
+            time.sleep(5)  # Ajusta el tiempo para la velocidad de movimiento
             # Actualizar al siguiente movimiento
             current_move_index += 1
             if current_move_index < len(self.movimientos):
-                knight_col, knight_row = self.movimientos[current_move_index]  # Cambiado el orden a (columna, fila)
-                self.path.append((knight_col, knight_row))  # Agregar la nueva posición al recorrido
+                knight_row, knight_col = self.movimientos[current_move_index]  # Cambiado el orden a (fila, columna)
+                self.path.append((knight_row, knight_col))  # Agregar la nueva posición al recorrido
             else:
                 running = False  # Terminar si no hay más movimientos
         
