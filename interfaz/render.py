@@ -41,17 +41,20 @@ class RenderChess:
     
     # Función para dibujar encabezado y costado con números de posición
     def __draw_header_and_side(self):
-        font = pygame.font.Font(None, 24)  # Tamaño de fuente para los números
+        # Ajustar el tamaño de la fuente en función del tamaño del cuadrante
+        font_size = max(12, self.cuadrante // 3)
+        font = pygame.font.Font(None, font_size)  # Tamaño de fuente para los números
+
         # Dibujar números de columnas en el encabezado
         for col in range(self.columnas):
             text_surface = font.render(str(col), True, self.TEXT_COLOR)
-            text_rect = text_surface.get_rect(center=(self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height // 2))
+            text_rect = text_surface.get_rect(center=(self.side_width + col * self.cuadrante + self.cuadrante // 2, self.header_height // 2 + 10))
             self.screen.blit(text_surface, text_rect)
-        
+
         # Dibujar números de filas en el costado
         for row in range(self.filas):
             text_surface = font.render(str(row), True, self.TEXT_COLOR)
-            text_rect = text_surface.get_rect(center=(self.side_width // 2, self.header_height + row * self.cuadrante + self.cuadrante // 2))
+            text_rect = text_surface.get_rect(center=(self.side_width // 2 - 10, self.header_height + row * self.cuadrante + self.cuadrante // 2))
             self.screen.blit(text_surface, text_rect)
     
     # Función para dibujar el recorrido con líneas y números
@@ -116,4 +119,5 @@ class RenderChess:
             else:
                 running = False
         
+        pygame.image.save(self.screen, f"out/tablero_{self.filas}x{self.columnas}.png")
         pygame.quit()
