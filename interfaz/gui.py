@@ -110,7 +110,7 @@ def comenzar_backtracking():
 # Configurar la ventana principal
 root = tk.Tk()
 root.title("Configuración del Tablero")
-root.geometry("400x350")
+root.geometry("500x350")
 root.resizable(False, False)
 
 # Estilo

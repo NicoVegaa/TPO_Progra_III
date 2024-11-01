@@ -8,7 +8,7 @@ def inicializar_tablero(tamano):
 
 def es_movimiento_valido(x, y, tablero):
     tamano = len(tablero)
-    return 0 <= x < tamano and 0 <= y < tamano and tablero[x][y] == -1
+    return 0 <= x < tamano and 0 <= y < tamano and tablero[y][x] == -1
 
 def imprimir_tablero(tablero):
     for fila in tablero:
@@ -38,8 +38,8 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
         nuevo_x, nuevo_y = x + dx, y + dy
         if es_movimiento_valido(nuevo_x, nuevo_y, tablero):
             posiciones_favorables.append((nuevo_x, nuevo_y))  # Agregar posiciones favorables
-            tablero[nuevo_x][nuevo_y] = cuenta_movimientos
-            movimientos.append((nuevo_x, nuevo_y))  # Agregar movimiento
+            tablero[nuevo_y][nuevo_x] = cuenta_movimientos
+            movimientos.append((nuevo_y, nuevo_x))  # Agregar movimiento
             
             # Recursividad
             encontrado, movimientos_resultantes = resolver_recorrido_del_caballo(tablero, nuevo_x, nuevo_y, cuenta_movimientos + 1, movimientos)
@@ -47,7 +47,7 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
                 return True, movimientos_resultantes  # Retornar cuando se encuentre el recorrido
             
             # Retroceso
-            tablero[nuevo_x][nuevo_y] = -1  # Deshacer movimiento
+            tablero[nuevo_y][nuevo_x] = -1  # Deshacer movimiento
             movimientos.pop()  # Eliminar movimiento si el camino no es válido
 
     return False, movimientos  # Retornar falso si no hay recorrido
