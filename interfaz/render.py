@@ -119,5 +119,5 @@ class RenderChess:
             else:
                 running = False
         
-        pygame.image.save(self.screen, f"out/tablero_{self.filas}x{self.columnas}.png")
+        pygame.image.save(self.screen, f"interfaz/out/tablero_{self.filas}x{self.columnas}.png")
         pygame.quit()
