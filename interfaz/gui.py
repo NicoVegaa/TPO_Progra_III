@@ -25,7 +25,7 @@ def comenzar_branch_and_bound():
         
         # Encontrar el recorrido del caballo
         camino_recorrido, mov_totales = encontrar_recorrido_del_caballo_branch_and_bound(tamano_tablero, posicion_x, posicion_y)
-        print(camino_recorrido[:2])
+        
         # Imprimir el resultado
         if camino_recorrido:
             resultado = "Recorrido del caballo:\n"
@@ -91,7 +91,6 @@ def comenzar_backtracking():
         # Encontrar el recorrido del caballo
         movimientos_iniciales = [(posicion_y, posicion_x)]  # Lista de movimientos inicial
         _, camino_recorrido = resolver_recorrido_del_caballo(tablero, posicion_x, posicion_y, 1, movimientos_iniciales)
-        print(camino_recorrido[:4])
         
         # Imprimir el resultado
         if camino_recorrido:
