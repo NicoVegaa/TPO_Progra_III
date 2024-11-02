@@ -119,7 +119,11 @@ class RenderChess:
             else:
                 running = False
         
-        pygame.image.save(self.screen, f"out/tablero_{self.filas}x{self.columnas}.png")
-        #Nico no rompa' lo huevo'
+
+        # Detecta la ruta de trabajo actual y guarda el archivo en la carpeta `out`
+        output_path = os.path.join(os.path.dirname(__file__), f"out/tablero_{self.filas}x{self.columnas}.png")
+        pygame.image.save(self.screen, output_path)
+        
+        #pygame.image.save(self.screen, f"out/tablero_{self.filas}x{self.columnas}.png")
         #pygame.image.save(self.screen, f"interfaz/out/tablero_{self.filas}x{self.columnas}.png")
         pygame.quit()
