@@ -84,4 +84,4 @@ def benchmark():
         else:
             print(f"dimensión: {i}x{i} no tiene solución")
 
-#benchmark()
+benchmark()

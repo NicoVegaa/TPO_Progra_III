@@ -36,7 +36,7 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
     for dx, dy in movimientos_caballo:
         nuevo_x, nuevo_y = x + dx, y + dy
         if es_movimiento_valido(nuevo_x, nuevo_y, tablero):
-            total_movimientos += 1
+            total_movimientos += 1 # variable para contar la cantidad total de movimientos que realiza el caballo
             posiciones_favorables.append((nuevo_y, nuevo_x))  # Agregar posiciones favorables
             tablero[nuevo_y][nuevo_x] = cuenta_movimientos
             movimientos.append((nuevo_y, nuevo_x))  # Agregar movimiento
@@ -51,3 +51,19 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
             movimientos.pop()  # Eliminar movimiento si el camino no es válido
 
     return False, movimientos  # Retornar falso si no hay recorrido
+
+
+def benchmark():
+    dim = 8
+    for i in range(dim+1):
+        global total_movimientos
+        total_movimientos = 0  # Reinicia el conteo para cada nuevo tablero
+        tablero = inicializar_tablero(i)
+        resultado, _ = resolver_recorrido_del_caballo(tablero, 0, 0, 1, [])
+        if resultado:
+            print(f'dimensión: {i}x{i}, movimientos realizados: ', total_movimientos)
+        else:
+            print(f'no se encontro solucion para tablero: {i}x{i}')
+
+
+#benchmark()
