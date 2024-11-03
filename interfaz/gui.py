@@ -34,7 +34,7 @@ def comenzar_branch_and_bound():
             # Renderizar el tablero
             render = RenderChess(tamano_tablero, camino_recorrido)
             render.render()
-            print(mov_totales)
+            #print(mov_totales)
         else:
             messagebox.showinfo("Resultado", "No se encontró un recorrido completo.")
     

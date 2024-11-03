@@ -51,7 +51,3 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
             movimientos.pop()  # Eliminar movimiento si el camino no es válido
 
     return False, movimientos  # Retornar falso si no hay recorrido
-
-tablero = inicializar_tablero(5)
-resolver_recorrido_del_caballo(tablero, 0, 0, 1, [])
-print(total_movimientos)
