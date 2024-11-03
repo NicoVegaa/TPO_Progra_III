@@ -55,15 +55,24 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
 
 def benchmark():
     dim = 8
-    for i in range(dim+1):
+    for i in range(1, dim + 1):  # Comienza en 1x1 para evitar el tablero 0x0
         global total_movimientos
         total_movimientos = 0  # Reinicia el conteo para cada nuevo tablero
         tablero = inicializar_tablero(i)
+        
+        # Detectar tableros sin solución conocidos
+        if i == 3 or i == 4:
+            print(f"No se encontró solución para tablero: {i}x{i} (sin solución conocida)")
+            continue
+        
+        start_time = time.time()
         resultado, _ = resolver_recorrido_del_caballo(tablero, 0, 0, 1, [])
+        elapsed_time = time.time() - start_time
+        
         if resultado:
-            print(f'dimensión: {i}x{i}, movimientos realizados: ', total_movimientos)
+            print(f'Dimensión: {i}x{i}, movimientos realizados: {total_movimientos}, tiempo: {elapsed_time:.4f} segundos')
         else:
-            print(f'no se encontro solucion para tablero: {i}x{i}')
+            print(f'No se encontró solución para tablero: {i}x{i}')
 
 
 #benchmark()
