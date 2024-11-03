@@ -34,9 +34,9 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
     ]
 
     for dx, dy in movimientos_caballo:
-        total_movimientos += 1
         nuevo_x, nuevo_y = x + dx, y + dy
         if es_movimiento_valido(nuevo_x, nuevo_y, tablero):
+            total_movimientos += 1
             posiciones_favorables.append((nuevo_y, nuevo_x))  # Agregar posiciones favorables
             tablero[nuevo_y][nuevo_x] = cuenta_movimientos
             movimientos.append((nuevo_y, nuevo_x))  # Agregar movimiento
@@ -54,3 +54,4 @@ def resolver_recorrido_del_caballo(tablero, x, y, cuenta_movimientos, movimiento
 
 tablero = inicializar_tablero(5)
 resolver_recorrido_del_caballo(tablero, 0, 0, 1, [])
+print(total_movimientos)

@@ -1,10 +1,6 @@
 import time
 import sys
 
-
-# Variable global para contar todos los intentos de movimiento
-movimientos_totales = 0
-
 sys.setrecursionlimit(100000)
 
 def es_movimiento_valido(x, y, N, visitado):
@@ -21,10 +17,10 @@ def obtener_vecinos(x, y, N, visitado):
     vecinos = []
     for movimiento in movimientos:
         nuevo_x, nuevo_y = x + movimiento[0], y + movimiento[1]
-        global movimientos_totales
+        
         if es_movimiento_valido(nuevo_x, nuevo_y, N, visitado):
             # Incrementamos movimientos_totales para cada intento de movimiento
-            movimientos_totales += 1
+            
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
     
@@ -38,17 +34,21 @@ def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_mov
     if cuenta_movimientos == N * N:
         # Si se ha recorrido todo el tablero, se ha encontrado una solución
         return True
+    
+    global movimientos_totales
 
     # Obtener vecinos ordenados por la cantidad de movimientos futuros (heurística)
     vecinos = obtener_vecinos(x, y, N, visitado)
 
     for siguiente_x, siguiente_y, _ in vecinos:
+        movimientos_totales += 1
         # Marca el movimiento como visitado y añádelo al camino
         visitado[siguiente_y][siguiente_x] = True
         camino.append((siguiente_y, siguiente_x))
 
         # Llama recursivamente para continuar el recorrido
         if recorrido_del_caballo_branch_and_bound(N, camino, visitado, siguiente_x, siguiente_y, cuenta_movimientos + 1):
+            
             return True  # Se encontró una solución
 
         # Retrocede si no se encuentra solución desde esta posición
@@ -73,3 +73,7 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
         return camino, movimientos_totales
     else:
         return None  # No se encontró una solución
+    
+
+encontrar_recorrido_del_caballo_branch_and_bound(5, 0, 0)
+print(movimientos_totales)
