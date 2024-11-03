@@ -21,9 +21,9 @@ def obtener_vecinos(x, y, N, visitado):
     vecinos = []
     for movimiento in movimientos:
         nuevo_x, nuevo_y = x + movimiento[0], y + movimiento[1]
-        # Incrementamos movimientos_totales para cada intento de movimiento
         global movimientos_totales
         if es_movimiento_valido(nuevo_x, nuevo_y, N, visitado):
+            # Incrementamos movimientos_totales para cada intento de movimiento
             movimientos_totales += 1
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
@@ -55,7 +55,7 @@ def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_mov
         visitado[siguiente_y][siguiente_x] = False
         camino.pop()
 
-    # Poda: Si no se encuentran vecinos válidos, se detiene esta rama
+    # Poda Explicita: Si no se encuentran vecinos válidos, se detiene esta rama
     return False
 
 def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
