@@ -22,6 +22,8 @@ def obtener_vecinos(x, y, N, visitado):
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
     
+
+    
     # Ordena el array vecinos de menor a mayor
     return sorted(vecinos, key=lambda x: x[2])
 
@@ -35,7 +37,7 @@ def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_mov
 
     # Obtener vecinos ordenados por la cantidad de movimientos futuros (heurística)
     vecinos = obtener_vecinos(x, y, N, visitado)
-
+    #vecinos=vecinos[:3]
     for siguiente_x, siguiente_y, _ in vecinos:
         movimientos_totales += 1
         # Marca el movimiento como visitado y añádelo al camino
@@ -72,16 +74,22 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
 '''
 movimientos totales no cuenta la pos inicial
 '''
+import time
+
 def benchmark():
-    dim = 10
-    for i in range(1, dim+1):
-        start = time.time()
-        resultado = encontrar_recorrido_del_caballo_branch_and_bound(i, 0, 0)
-        end = time.time()
-        if resultado:
-            camino, mov_totales = resultado
-            print(f"dimensión: {i}x{i}: {mov_totales} movimientos, tiempo: {end - start} segundos")
-        else:
-            print(f"dimensión: {i}x{i} no tiene solución")
+    dim = 20
+    for i in range(10, dim + 1):
+        print(f"\nProbando dimensión: {i}x{i}")
+        for fila in range(i):
+            for columna in range(i):
+                start = time.time()
+                resultado = encontrar_recorrido_del_caballo_branch_and_bound(i, fila, columna)
+                end = time.time()
+                
+                if resultado:
+                    camino, mov_totales = resultado
+                    print(f"Posición inicial ({fila}, {columna}) - {mov_totales} movimientos, tiempo: {end - start:.4f} segundos")
+                else:
+                    print(f"Posición inicial ({fila}, {columna}) - no tiene solución")
 
 #benchmark()

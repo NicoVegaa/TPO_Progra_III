@@ -111,7 +111,8 @@ class RenderChess:
             
             pygame.display.flip()
             time.sleep(0.3)
-            
+            #time.sleep(0.00000000000000001)
+
             current_move_index += 1
             if current_move_index < len(self.movimientos):
                 knight_row, knight_col = self.movimientos[current_move_index]
