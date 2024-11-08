@@ -21,11 +21,12 @@ def obtener_vecinos(x, y, N, visitado):
             # Incrementamos movimientos_totales para cada intento de movimiento
             cuenta = sum(1 for m in movimientos if es_movimiento_valido(nuevo_x + m[0], nuevo_y + m[1], N, visitado))
             vecinos.append((nuevo_x, nuevo_y, cuenta))
-    
 
-    
     # Ordena el array vecinos de menor a mayor
     return sorted(vecinos, key=lambda x: x[2])
+
+def bound(nodosVivos):
+    return nodosVivos[:2]
 
 def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_movimientos, movimientos_totales):
     """
@@ -37,7 +38,9 @@ def recorrido_del_caballo_branch_and_bound(N, camino, visitado, x, y, cuenta_mov
 
     # Obtener vecinos ordenados por la cantidad de movimientos futuros (heurística)
     vecinos = obtener_vecinos(x, y, N, visitado)
-    #vecinos=vecinos[:3]
+    
+    vecinos = bound(vecinos)
+    
     for siguiente_x, siguiente_y, _ in vecinos:
         movimientos_totales += 1
         # Marca el movimiento como visitado y añádelo al camino
@@ -69,19 +72,22 @@ def encontrar_recorrido_del_caballo_branch_and_bound(N, inicio_x, inicio_y):
     if encontrado:
         return camino, movimientos_totales
     else:
-        None
+        return None
 
 '''
 movimientos totales no cuenta la pos inicial
 '''
-import time
 
 def benchmark():
-    dim = 20
-    for i in range(10, dim + 1):
+    dim = 10
+    for i in range(dim, dim + 1):
         print(f"\nProbando dimensión: {i}x{i}")
         for fila in range(i):
             for columna in range(i):
+                #Condición para omitir las casillas negras (cuando la suma de las coordenadas no es par)
+                if (fila + columna) % 2 != 0:
+                   continue  # No probar en casillas negras
+                
                 start = time.time()
                 resultado = encontrar_recorrido_del_caballo_branch_and_bound(i, fila, columna)
                 end = time.time()
