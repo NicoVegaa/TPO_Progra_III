@@ -83,20 +83,25 @@ def benchmark():
     for i in range(5, dim + 1):
         print(f"\nProbando dimensión: {i}x{i}")
         for fila in range(i):
+            # En tableros impares, omitir filas impares
+            if i % 2 != 0 and fila % 2 != 0:
+                continue
+
             for columna in range(i):
-                #Condición para omitir las casillas negras (cuando la suma de las coordenadas no es par)
-                if (dim % 2 != 0):
-                    if (fila + columna) % 2 != 0:
-                        continue  # No probar en casillas negras
-                
+                # En tableros impares, omitir columnas impares
+                if i % 2 != 0 and columna % 2 != 0:
+                    continue
+
                 start = time.time()
                 resultado = encontrar_recorrido_del_caballo_branch_and_bound(i, fila, columna)
                 end = time.time()
-                
+
                 if resultado:
                     camino, mov_totales = resultado
                     print(f"Posición inicial ({fila}, {columna}) - {mov_totales} movimientos, tiempo: {end - start:.4f} segundos")
                 else:
                     print(f"Posición inicial ({fila}, {columna}) - no tiene solución")
 
-#benchmark()
+benchmark()
+
+
