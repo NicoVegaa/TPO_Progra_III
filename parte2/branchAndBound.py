@@ -80,7 +80,7 @@ movimientos totales no cuenta la pos inicial
 
 def benchmark():
     dim = 10
-    for i in range(dim, dim + 1):
+    for i in range(5, dim + 1):
         print(f"\nProbando dimensión: {i}x{i}")
         for fila in range(i):
             for columna in range(i):
@@ -99,4 +99,4 @@ def benchmark():
                 else:
                     print(f"Posición inicial ({fila}, {columna}) - no tiene solución")
 
-benchmark()
+#benchmark()
