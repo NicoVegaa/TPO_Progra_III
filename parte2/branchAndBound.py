@@ -85,8 +85,9 @@ def benchmark():
         for fila in range(i):
             for columna in range(i):
                 #Condición para omitir las casillas negras (cuando la suma de las coordenadas no es par)
-                if (fila + columna) % 2 != 0:
-                   continue  # No probar en casillas negras
+                if (dim % 2 != 0):
+                    if (fila + columna) % 2 != 0:
+                        continue  # No probar en casillas negras
                 
                 start = time.time()
                 resultado = encontrar_recorrido_del_caballo_branch_and_bound(i, fila, columna)
@@ -98,4 +99,4 @@ def benchmark():
                 else:
                     print(f"Posición inicial ({fila}, {columna}) - no tiene solución")
 
-#benchmark()
+benchmark()
