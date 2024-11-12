@@ -102,6 +102,6 @@ def benchmark():
                 else:
                     print(f"Posición inicial ({fila}, {columna}) - no tiene solución")
 
-benchmark()
+#benchmark()
 
 

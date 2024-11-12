@@ -143,9 +143,9 @@ boton_backtracking.grid(row=3, column=0, columnspan=2, pady=10)
 boton_byb = ttk.Button(frame, text="Probar Branch and Bound", command=comenzar_branch_and_bound)
 boton_byb.grid(row=4, column=0, columnspan=2, pady=10)
 
-'''# heuristico iterativo
+# heuristico iterativo
 boton_byb_iterativo = ttk.Button(frame, text="heuristico iterativo", command=comenzar_heuristico_iterativo)
 boton_byb_iterativo.grid(row=5, column=0, columnspan=2, pady=10)
-'''
+
 # Ejecutar la aplicación
 root.mainloop()
